@@ -95,4 +95,4 @@ def responder():
   return 'Não usamos esse método'
 
 
-app.run(host='0.0.0.0')
+app.run()
