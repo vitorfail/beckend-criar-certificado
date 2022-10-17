@@ -13,17 +13,17 @@ def criar():
   else:
     tipo1 = {
       "font_nome": r"font/cac_champagne.ttf",
-      "font_size_nome": 76,
+      "font_size_nome": 276,
       "font_assinaturas": r"font/BODONI BK BT BOOK.TTF",
-      "font_size_assinaturas": 16,
+      "font_size_assinaturas": 110,
       "font_conteudo": r"font/BauerBodoniStd-Roman.ttf",
-      "font_size_conteudo": 13,
+      "font_size_conteudo": 49,
       "coord_nome": (873, 1160),
       "coord_diretor": (650, 1850),
       "coord_reitor": (2350, 1850),
       "coor_data": (1461, 2180),
       "coor_conteudo": (880, 1400),
-      "imagem": r'certificado2.jpg'
+      "imagem": r'certificado1.jpg'
     }
     tipo2 = {
       "font_nome": r"font/cac_champagne.ttf",
@@ -54,12 +54,9 @@ def criar():
     coor_data = result["coor_data"]
     coor_conteudo = result["coor_conteudo"]
     imagem = Image.open(result["imagem"])
-    font_nome = ImageFont.truetype(result["font_nome"],
-                                   result["font_size_nome"])
-    font_assinatura = ImageFont.truetype(result["font_assinaturas"],
-                                         result["font_size_assinaturas"])
-    font_conteudo = ImageFont.truetype(result["font_conteudo"],
-                                       result["font_size_conteudo"])
+    font_nome = ImageFont.truetype(result["font_nome"], result["font_size_nome"])
+    font_assinatura = ImageFont.truetype(result["font_assinaturas"], result["font_size_assinaturas"])
+    font_conteudo = ImageFont.truetype(result["font_conteudo"], result["font_size_conteudo"])
 
     nome = dados['nome']
     diretor = dados['diretor']
@@ -77,10 +74,7 @@ def criar():
     w5, h5 = coor_conteudo
     w, h = desenho.textsize(nome)
     desenho.text(((imagem.width-w1)/2, H1), nome, font=font_nome, fill=rgb_azul)
-    desenho.text((w2 - w, h2 - h),
-                 diretor,
-                 font=font_assinatura,
-                 fill=rgb_azul)
+    desenho.text((w2 - w, h2 - h), diretor, font=font_assinatura, fill=rgb_azul)
     desenho.text((w3 - w, h3 - h), reitor, font=font_assinatura, fill=rgb_azul)
     desenho.text((w4 - w, h4 - h), data, font=font_assinatura, fill=rgb_azul)
     desenho.text((w5 - w, h5 - h), conteudo, font=font_conteudo, fill=rgb_azul)
