@@ -94,5 +94,5 @@ def criar():
 def responder():
   return 'Não usamos esse método'
 
-
-app.run(host='0.0.0.0')
+if __name__ == '__main__': 
+  app.run()
