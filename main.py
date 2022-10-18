@@ -13,7 +13,7 @@ def criar():
   else:
     dados = request.json
 
-    for nome in dados['nome']:
+    for nome_ in dados['nome']:
       tipo1 = {
         "font_nome": r"font/cac_champagne.ttf",
         "font_size_nome": 276,
@@ -94,7 +94,7 @@ def criar():
       font_assinatura = ImageFont.truetype(result["font_assinaturas"], result["font_size_assinaturas"])
       font_conteudo = ImageFont.truetype(result["font_conteudo"], result["font_size_conteudo"])
 
-      nome = dados['nome']
+      nome = nome_
       diretor = dados['diretor']
       reitor = dados['reitor']
       data = dados['data']
@@ -102,7 +102,7 @@ def criar():
 
       rgb_azul = (dados['rgb'][0], dados['rgb'][1], dados['rgb'][2])
       desenho = ImageDraw.Draw(imagem)
-      w1, h1 = font_nome.getsize(dados['nome'])
+      w1, h1 = font_nome.getsize(nome_)
       W1, H1 = coord_nome
       W2, H2 = font_assinatura.getsize(dados['diretor'])
       w2, h2 = coord_diretor
