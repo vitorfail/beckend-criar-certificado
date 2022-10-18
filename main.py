@@ -1,10 +1,28 @@
-from flask import Flask, request, send_file
+from base64 import encodebytes
+from flask import Flask, request, send_file, jsonify
 from PIL import Image, ImageFont, ImageDraw
 from flask_cors import CORS
+import os
+import random
 
 app = Flask(__name__)
 CORS(app)
 
+def get_response_image(image_path):
+    pil_img = Image.open(image_path, mode='r') # reads the PIL image
+    byte_arr = io.BytesIO()
+    pil_img.save(byte_arr, format='PNG') # convert the PIL image to byte array
+    encoded_img = encodebytes(byte_arr.getvalue()).decode('ascii') # encode as base64
+    return encoded_img
+
+def get_images():
+
+    ##reuslt  contains list of path images
+  result = get_images_from_local_storage()
+  encoded_imges = []
+  for image_path in result:
+    encoded_imges.append(get_response_image(image_path))
+  return jsonify({'result': encoded_imges})
 
 @app.route('/', methods=['POST'])
 def criar():
@@ -12,7 +30,8 @@ def criar():
     return 'Não há nehum parâmetro. Por favor envie a descriçaõ da imagem'
   else:
     dados = request.json
-
+    dirname = dados['diretor']+ random.randint(100000,999999)
+    os.mkdir(dirname)
     for nome_ in dados['nome']:
       tipo1 = {
         "font_nome": r"font/cac_champagne.ttf",
@@ -80,13 +99,11 @@ def criar():
           return tipo3
         if t == 'tipo4':
           return tipo4
-
-
       dados = request.json
       result = tipo(dados['tipo'])
       coord_nome = result["coord_nome"]
       coord_diretor = result["coord_diretor"]
-      coord_reitor = result["coord_reitor"]
+      coord_reitor = " "
       coor_data = result["coor_data"]
       coor_conteudo = result["coor_conteudo"]
       imagem = Image.open(result["imagem"])
@@ -117,7 +134,7 @@ def criar():
       desenho.text((w4, h4 - h), data, font=font_assinatura, fill=rgb_azul)
       desenho.text((w5 - w, h5 - h), conteudo, font=font_conteudo, fill=rgb_azul)
 
-      imagem.save(f'{nome}.jpg')
+      imagem.save(f'{dirname}/{nome}.jpg')
       filename = nome + '.jpg'
       return send_file(filename, mimetype='image/jpg')
 @app.route('/', methods=['GET'])
