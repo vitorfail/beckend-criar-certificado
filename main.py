@@ -1,28 +1,23 @@
 from base64 import encodebytes
+import io
 from flask import Flask, request, send_file, jsonify
 from PIL import Image, ImageFont, ImageDraw
 from flask_cors import CORS
 import os
 import random
+import shutil
 
 app = Flask(__name__)
 CORS(app)
+dirname =''
 
-def get_response_image(image_path):
-    pil_img = Image.open(image_path, mode='r') # reads the PIL image
+def pegarimagem_codificada(image_path, pasta):
+    pil_img = Image.open(pasta+'/'+image_path, mode='r') # reads the PIL image
     byte_arr = io.BytesIO()
     pil_img.save(byte_arr, format='PNG') # convert the PIL image to byte array
     encoded_img = encodebytes(byte_arr.getvalue()).decode('ascii') # encode as base64
     return encoded_img
 
-def get_images():
-
-    ##reuslt  contains list of path images
-  result = get_images_from_local_storage()
-  encoded_imges = []
-  for image_path in result:
-    encoded_imges.append(get_response_image(image_path))
-  return jsonify({'result': encoded_imges})
 
 @app.route('/', methods=['POST'])
 def criar():
@@ -30,7 +25,9 @@ def criar():
     return 'Não há nehum parâmetro. Por favor envie a descriçaõ da imagem'
   else:
     dados = request.json
-    dirname = dados['diretor']+ random.randint(100000,999999)
+    dirname = dados['diretor']+ str(random.randint(100000,999999))
+    print(dirname)
+    lista_imagens =[]
     os.mkdir(dirname)
     for nome_ in dados['nome']:
       tipo1 = {
@@ -103,7 +100,7 @@ def criar():
       result = tipo(dados['tipo'])
       coord_nome = result["coord_nome"]
       coord_diretor = result["coord_diretor"]
-      coord_reitor = " "
+      coord_reitor = result["coord_reitor"]
       coor_data = result["coor_data"]
       coor_conteudo = result["coor_conteudo"]
       imagem = Image.open(result["imagem"])
@@ -113,7 +110,7 @@ def criar():
 
       nome = nome_
       diretor = dados['diretor']
-      reitor = dados['reitor']
+      reitor = " "
       data = dados['data']
       conteudo = dados['conteudo']
 
@@ -135,8 +132,18 @@ def criar():
       desenho.text((w5 - w, h5 - h), conteudo, font=font_conteudo, fill=rgb_azul)
 
       imagem.save(f'{dirname}/{nome}.jpg')
-      filename = nome + '.jpg'
-      return send_file(filename, mimetype='image/jpg')
+      lista_pastas = os.listdir(dirname)
+      for imagem_path in lista_pastas:
+        lista_imagens.append(pegarimagem_codificada(imagem_path, dirname))
+      
+    @app.teardown_request
+    def delete(exc):
+      try:
+        shutil.rmtree(dirname)
+      except:
+        return exc    
+    return jsonify({"list": lista_imagens}) 
+
 @app.route('/', methods=['GET'])
 def responder():
   return 'Não usamos esse método'
