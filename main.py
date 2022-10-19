@@ -116,10 +116,6 @@ def criar():
 
     imagem.save(f'{nome}.jpg')
     filename = nome + '.jpg'
-    @app.after_request
-    def delete(response):
-      os.remove('./'+filename)
-      return response   
     return send_file(filename, mimetype='image/jpg')      
      
 
