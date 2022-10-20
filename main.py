@@ -83,6 +83,18 @@ def criar():
         return tipo4
     dados = request.json
     result = tipo(dados['tipo'])
+
+    #Armazenar os dados do cliente
+    nome = dados['nome']
+    diretor = dados['diretor']
+    reitor = " "
+    data = dados['data']
+    conteudo = dados['conteudo']
+    rgb_azul = (dados['rgb'][0], dados['rgb'][1], dados['rgb'][2])
+
+    #limpados os dados
+    dados =''
+
     coord_nome = result["coord_nome"]
     coord_diretor = result["coord_diretor"]
     coord_reitor = result["coord_reitor"]
@@ -93,21 +105,15 @@ def criar():
     font_assinatura = ImageFont.truetype(result["font_assinaturas"], result["font_size_assinaturas"])
     font_conteudo = ImageFont.truetype(result["font_conteudo"], result["font_size_conteudo"])
 
-    nome = dados['nome']
-    diretor = dados['diretor']
-    reitor = " "
-    data = dados['data']
-    conteudo = dados['conteudo']
 
-    rgb_azul = (dados['rgb'][0], dados['rgb'][1], dados['rgb'][2])
     desenho = ImageDraw.Draw(imagem)
     w1, h1 = font_nome.getsize(nome)
     W1, H1 = coord_nome
-    W2, H2 = font_assinatura.getsize(dados['diretor'])
+    W2, H2 = font_assinatura.getsize(diretor)
     w2, h2 = coord_diretor
     w3, h3 = coord_reitor
     w4, h4 = coor_data
-    W4, H4 = font_assinatura.getsize(dados['data'])
+    W4, H4 = font_assinatura.getsize(data)
     w5, h5 = coor_conteudo
     w, h = desenho.textsize(nome)
     desenho.text(((imagem.width-w1)/2, H1), nome, font=font_nome, fill=rgb_azul)
@@ -115,8 +121,9 @@ def criar():
     desenho.text((w3 - w, h3 - h), reitor, font=font_assinatura, fill=rgb_azul)
     desenho.text((w4, h4 - h), data, font=font_assinatura, fill=rgb_azul)
     desenho.text((w5 - w, h5 - h), conteudo, font=font_conteudo, fill=rgb_azul)
-
+    
     imagem.save(f'montagens/{nome}.jpg')
+    imagem.close()
     filename = nome + '.jpg'
     return send_file('montagens/'+filename, mimetype='image/jpg')      
      
