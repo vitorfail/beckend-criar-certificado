@@ -1,9 +1,8 @@
-from base64 import encodebytes
-from statistics import mode
-from flask import Flask, request, send_file, jsonify
+from flask import Flask, request, send_file, after_this_request
 from PIL import Image, ImageFont, ImageDraw
 from flask_cors import CORS
-import os
+from os import listdir, remove
+import io
 
 app = Flask(__name__)
 CORS(app)
@@ -11,6 +10,9 @@ CORS(app)
 
 @app.route('/', methods=['POST'])
 def criar():
+  lista_arquivo= listdir('montagens')
+  for i in lista_arquivo:
+    remove('montagens/'+i)
   if request.json == None or request.json == False:
     return 'Não há nehum parâmetro. Por favor envie a descriçaõ da imagem'
   else:
@@ -114,9 +116,9 @@ def criar():
     desenho.text((w4, h4 - h), data, font=font_assinatura, fill=rgb_azul)
     desenho.text((w5 - w, h5 - h), conteudo, font=font_conteudo, fill=rgb_azul)
 
-    imagem.save(f'{nome}.jpg')
+    imagem.save(f'montagens/{nome}.jpg')
     filename = nome + '.jpg'
-    return send_file(filename, mimetype='image/jpg')      
+    return send_file('montagens/'+filename, mimetype='image/jpg')      
      
 
 @app.route('/', methods=['GET'])
