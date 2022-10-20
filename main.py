@@ -109,7 +109,7 @@ def criar():
         "font_size_descri": 61,
         "coord_instituicao":(599, 160),
         "coord__descri":(599, 250),
-        "coord_nome": (1600, 1217),
+        "coord_nome":(1600, 1217),
         "coord_diretor": (1740, 1996),
         "coord_reitor": (2350, 1850),
         "coor_data": (2453, 2009),
@@ -141,8 +141,6 @@ def criar():
     descri = dados['descri']
     rgb_azul = (dados['rgb'][0], dados['rgb'][1], dados['rgb'][2])
 
-    #limpados os dados
-    dados =''
 
     coord_nome = result["coord_nome"]
     coord_diretor = result["coord_diretor"]
@@ -152,6 +150,10 @@ def criar():
     coor_instituicao = result["coord_instituicao"]
     coor_descri = result["coord__descri"]
     imagem = Image.open(result["imagem"])
+ 
+    #limpados os dados
+    dados =''
+
     font_nome = ImageFont.truetype(result["font_nome"], result["font_size_nome"])
     font_assinatura = ImageFont.truetype(result["font_assinaturas"], result["font_size_assinaturas"])
     font_conteudo = ImageFont.truetype(result["font_conteudo"], result["font_size_conteudo"])
