@@ -109,11 +109,11 @@ def criar():
         "font_size_descri": 61,
         "coord_instituicao":(599, 160),
         "coord__descri":(599, 250),
-        "coord_nome":(1600, 1217),
-        "coord_diretor": (1740, 1996),
-        "coord_reitor": (2350, 1850),
-        "coor_data": (2453, 2009),
-        "coor_conteudo": (1061, 1480),
+        "coord_nome":(1600, 1097),
+        "coord_diretor": (1690, 1809),
+        "coord_reitor": (2350, 1650),
+        "coor_data": (2300, 1809),
+        "coor_conteudo": (1041, 1380),
         "imagem": r'certificado5.jpg'
     }
 
