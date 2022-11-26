@@ -2,7 +2,6 @@ from flask import Flask, request, send_file, after_this_request
 from PIL import Image, ImageFont, ImageDraw
 from flask_cors import CORS
 from os import listdir, remove
-import io
 
 app = Flask(__name__)
 CORS(app)
