@@ -9,9 +9,6 @@ CORS(app)
 
 @app.route('/', methods=['POST'])
 def criar():
-  lista_arquivo= listdir('montagens')
-  for i in lista_arquivo:
-    remove('montagens/'+i)
   if request.json == None or request.json == False:
     return 'Não há nehum parâmetro. Por favor envie a descriçaõ da imagem'
   else:
