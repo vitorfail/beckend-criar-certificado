@@ -2,6 +2,7 @@ from flask import Flask, request, send_file, after_this_request
 from PIL import Image, ImageFont, ImageDraw
 from flask_cors import CORS
 from os import listdir, remove
+from io import BytesIO
 
 app = Flask(__name__)
 CORS(app)
@@ -178,10 +179,13 @@ def criar():
     desenho.text((w6 - w, h6 - h), instituicao, font=font_instituicao, fill=rgb_azul)
     desenho.text((w7 - w, h7 - h), descri, font=font_descri, fill=rgb_azul)
     
-    imagem.save(f'montagens/{nome}.jpg')
-    imagem.close()
+    buffer = BytesIO()
+    imagem.save(buffer, format='JPEG')  # Especifique o formato desejado (JPEG, PNG, etc.)
+
+    # Definir o ponteiro do buffer para o início
+    buffer.seek(0)
     filename = nome + '.jpg'
-    return send_file('montagens/'+filename, mimetype='image/jpg')      
+    return send_file(buffer, mimetype='image/jpeg', as_attachment=True, download_name='nome_da_imagem.jpg')      
      
 
 @app.route('/', methods=['GET'])
